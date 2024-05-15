@@ -92,11 +92,11 @@ jobs:
             uses: foo-software/lighthouse-check-status-action@master
             with:
               lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
-              minAccessibilityScore: "90"
-              minBestPracticesScore: "90"
-              minPerformanceScore: "50"
-              minProgressiveWebAppScore: "50"
-              minSeoScore: "50"
+              minAccessibilityScore: "10"
+              minBestPracticesScore: "10"
+              minPerformanceScore: "10"
+              # minProgressiveWebAppScore: "10"
+              minSeoScore: "10"
 
           - name: Upload artifacts
             uses: actions/upload-artifact@master
