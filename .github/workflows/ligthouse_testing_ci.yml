@@ -1,0 +1,119 @@
+name: Generate lighthouse test report on PR
+on:
+    pull_request:
+        branches: [ main, lighthouse_testing_pipeline ]
+        
+jobs:
+    lhci:
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: Checkout repo
+            uses: actions/checkout@v3
+
+          - name: Install Node.js
+            uses: actions/setup-node@v4
+            with: 
+                node-version: 20
+          - run: npm install
+
+            
+          # trying with treosh lhci tests
+          # - name: Run Lighthouse CI
+          #   uses: treosh/lighthouse-ci-action@v8
+          #   with:
+          #     urls: 'https://yral.com'
+          #     temporaryPublicStorage: true 
+
+          # - name: Comment on PR
+          #   uses: actions/github-script@v5
+          #   with:
+          #     script: |
+          #       # const { context } = require('@actions/github');
+          #       const prNumber = context.payload.pull_request.number;
+          #       # const repoName = context.repo.repo;
+          #       # const ownerName = context.repo.owner;
+          #       const githubToken = ${{ secrets.NEW_GITHUB_APP_TOKEN }};
+          #       const url = `https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/${Date.now()}.report.html`; // Adjust based on where the report is stored
+          #       const body = `Lighthouse report is available here: [Lighthouse Report](${url})`;
+
+          #       octokit.rest.issues.createComment({
+          #         ...context.repo,
+          #         issue_number: prNumber,
+          #         body: body
+          #       });
+
+
+          # - name: Install Lighthouse
+          #   run: npm install -g @lhci/cli@0.13.x
+
+          # - name: Run Lighthouse
+          #   id: lhcitests
+          #   run: lhci autorun
+            # env: 
+            #     LHCI_GITHUB_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+          - name: install playwright
+            run: npx playwright install    
+
+          - name: run playwright
+            id: tests
+            run: npx playwright test --project=firefox 
+            continue-on-error: true
+
+          - name: Notify on Google Chat 
+            uses: Co-qn/google-chat-notification@v1
+            with:
+              name: test
+              url: ${{ secrets.TEST_WEBHOOK_URL }}
+              status: ${{ steps.tests.outcome }}
+
+
+          # - name: Check test result and comment
+          #   uses: peter-evans/create-or-update-comment@v1
+          #   with:
+          #     token: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          #     issue-number: ${{ github.event.pull_request.number }}
+          #     body: |
+          #       ${{ steps.tests.outcome == 'failed' && 'Test failed, Please check logs for details.' || 'Test passed :heavy_check_mark:'  }}
+
+
+
+          # foo lhci test to comment Lighthouse score to PR
+          - uses: actions/checkout@master
+          - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+          - name: Lighthouse
+            uses: foo-software/lighthouse-check-action@master
+            with:
+              outputDirectory: ${{ github.workspace }}/tmp/artifacts
+              gitHubAccessToken: ${{ secrets.NEW_GITHUB_APP_TOKEN }}
+              urls: 'https://yral.com/'
+          - name: Verify Lighthouse Check results
+            uses: foo-software/lighthouse-check-status-action@master
+            with:
+              lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
+              minAccessibilityScore: "10"
+              minBestPracticesScore: "10"
+              minPerformanceScore: "10"
+              # minProgressiveWebAppScore: "10"
+              minSeoScore: "10"
+
+          - name: Upload artifacts
+            uses: actions/upload-artifact@master
+            with:
+              name: Lighthouse reports
+              path: ${{ github.workspace }}/tmp/artifacts
+
+
+          # call another repo as post deploy action
+          - name: Trigger a workflow in another repo
+            uses: actions/github-script@v5
+            with:
+                script: |
+                  github.rest.repos.createDispatchEvent({
+                    owner: 'shreybaz',
+                    repo: 'test_automation',
+                    event_type: 'call',
+                    client_payload: { key: "value" }
+                  });
+                github-token: ${{ secrets.NEW_GITHUB_APP_TOKEN }}
