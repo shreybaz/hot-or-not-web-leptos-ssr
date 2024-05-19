@@ -111,8 +111,7 @@ jobs:
                   github.rest.repos.createDispatchEvent({
                     owner: 'go-bazzinga',
                     repo: 'hot-or-not-web-leptos-ssr-e2e-test',
-                    event_type: 'call',
-                    
-                    client_payload: { ref: "playwright_testing" }
+                    event_type: 'call',                    
+                    client_payload: { key: "value" }
                   });
                 github-token: ${{ secrets.NEW_GITHUB_APP_TOKEN }}
