@@ -32,7 +32,7 @@ jobs:
 
           - name: run playwright
             id: tests
-            run: npx playwright test
+            run: npx playwright test --project=firefox --workers=3
             # continue-on-error: true
             
           # - name: Notify on Google Chat 
