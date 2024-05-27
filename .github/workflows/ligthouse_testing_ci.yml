@@ -104,14 +104,22 @@ jobs:
 
 
           # call another repo as post deploy action
-          - name: Trigger a workflow in another repo
-            uses: actions/github-script@v5
-            with:
-                script: |
-                  github.rest.repos.createDispatchEvent({
-                    owner: 'go-bazzinga',
-                    repo: 'hot-or-not-web-leptos-ssr-e2e-test',
-                    event_type: 'call',                    
-                    client_payload: { key: "value" }
-                  });
-                github-token: ${{ secrets.TRIGGER_TEST_TOKEN }}
+          # - name: Trigger a workflow in another repo
+          #   uses: actions/github-script@v5
+          #   with:
+          #       script: |
+          #         github.rest.repos.createDispatchEvent({
+          #           owner: 'go-bazzinga',
+          #           repo: 'hot-or-not-web-leptos-ssr-e2e-test',
+          #           event_type: 'call',                    
+          #           client_payload: { key: "value" }
+          #         });
+          #       github-token: ${{ secrets.TRIGGER_TEST_TOKEN }}
+
+
+          - name: Repository Dispatch
+            run: |
+              curl -X POST https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
+              -H 'Accept: application/vnd.github.everest-preview+json' \
+              -H 'Authorization: token ${{ secrets.TRIGGER_TEST_TOKEN }}' \
+              -d '{"event_type": "call"}'
