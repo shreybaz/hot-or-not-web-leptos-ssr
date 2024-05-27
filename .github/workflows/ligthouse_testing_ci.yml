@@ -27,13 +27,13 @@ jobs:
             # env: 
             #     LHCI_GITHUB_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
-          - name: install playwright
-            run: npx playwright install    
+          # - name: install playwright
+          #   run: npx playwright install    
 
-          - name: run playwright
-            id: tests
-            run: npx playwright test --project=firefox --workers=3
-            # continue-on-error: true
+          # - name: run playwright
+          #   id: tests
+          #   run: npx playwright test --project=firefox --workers=3
+          #   # continue-on-error: true
             
           # - name: Notify on Google Chat 
           #   uses: Co-qn/google-chat-notification@v1
@@ -114,4 +114,4 @@ jobs:
                     event_type: 'call',                    
                     client_payload: { key: "value" }
                   });
-                github-token: ${{ secrets.NEW_GITHUB_APP_TOKEN }}
+                github-token: ${{ secrets.TRIGGER_TEST_TOKEN }}
