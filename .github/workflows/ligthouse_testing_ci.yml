@@ -103,7 +103,7 @@ jobs:
           #     path: ${{ github.workspace }}/tmp/artifacts
 
 
-          call another repo as post deploy action
+          # call another repo as post deploy action
           - name: Trigger a workflow in another repo
             uses: actions/github-script@v5
             with:
