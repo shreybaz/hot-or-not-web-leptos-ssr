@@ -109,12 +109,12 @@ jobs:
             with:
                 script: |
                   github.rest.repos.createDispatchEvent({
-                    owner: 'shreybaz',
-                    repo: 'test_automation',
+                    owner: 'go-bazzinga',
+                    repo: 'hot-or-not-web-leptos-ssr-e2e-test',
                     event_type: 'call',                    
                     client_payload: { key: "value" }
                   });
-                github-token: ${{ secrets.NEW_TRIGGER_TOKEN }}
+                github-token: ${{ secrets.DUMMY_TOKEN_TESTING }}
 
 
           # - name: Repository Dispatch
