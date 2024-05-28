@@ -114,7 +114,7 @@ jobs:
                     event_type: 'call',                    
                     client_payload: { key: "value" }
                   });
-                github-token: ${{ secrets.TRIGGER_TEST_TOKEN }}
+                github-token: ${{ secrets.NEW_TRIGGER_TOKEN }}
 
 
           # - name: Repository Dispatch
