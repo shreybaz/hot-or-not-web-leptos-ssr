@@ -121,5 +121,5 @@ jobs:
           #   run: |
           #     curl -X POST https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
           #     -H 'Accept: application/vnd.github.everest-preview+json' \
-          #     -H 'Authorization: token ${{ secrets.TRIGGER_TEST_TOKEN }}' \
+          #     -H 'Authorization: token ${{ secrets.DUMMY_TOKEN_TESTING }}' \
           #     -d '{"event_type": "call"}'
