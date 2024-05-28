@@ -127,8 +127,8 @@ jobs:
 
           - name: Repository Dispatch
             run: |
-              curl -X POST https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
-              -H 'Accept: application/vnd.github.v3+json' \
+              curl -X POST https://api.github.com/repos/shreybaz/test_automation/dispatches \
+              -H 'Accept: application/vnd.github+json' \
               -H 'Authorization: token ${{ secrets.DUMMY_TOKEN_TESTING }}' \
               -d '{"event_type": "call"}'
           
