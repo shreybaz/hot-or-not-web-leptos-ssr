@@ -103,18 +103,18 @@ jobs:
           #     path: ${{ github.workspace }}/tmp/artifacts
 
 
-          # call another repo as post deploy action
-          - name: Trigger a workflow in another repo
-            uses: actions/github-script@v5
-            with:
-                script: |
-                  github.rest.repos.createDispatchEvent({
-                    owner: 'go-bazzinga',
-                    repo: 'hot-or-not-web-leptos-ssr-e2e-test',
-                    event_type: 'call',                    
-                    client_payload: { key: "value" }
-                  });
-                github-token: ${{ secrets.DUMMY_TOKEN_TESTING }}
+          # # call another repo as post deploy action
+          # - name: Trigger a workflow in another repo
+          #   uses: actions/github-script@v5
+          #   with:
+          #       script: |
+          #         github.rest.repos.createDispatchEvent({
+          #           owner: 'go-bazzinga',
+          #           repo: 'hot-or-not-web-leptos-ssr-e2e-test',
+          #           event_type: 'call',                    
+          #           client_payload: { key: "value" }
+          #         });
+          #       github-token: ${{ secrets.DUMMY_TOKEN_TESTING }}
 
 
           # - name: Repository Dispatch
@@ -123,3 +123,11 @@ jobs:
           #     -H 'Accept: application/vnd.github.everest-preview+json' \
           #     -H 'Authorization: token ${{ secrets.DUMMY_TOKEN_TESTING }}' \
           #     -d '{"event_type": "call"}'
+
+          - name: Trigger workflow in another repository
+            run: |
+              curl -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
+              -d '{"event_type":"call"}'
