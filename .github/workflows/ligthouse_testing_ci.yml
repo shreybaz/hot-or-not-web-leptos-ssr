@@ -129,7 +129,7 @@ jobs:
             run: |
               curl -X POST https://api.github.com/repos/shreybaz/test_automation/dispatches \
               -H 'Accept: application/vnd.github+json' \
-              -H 'Authorization: token ${{ secrets.DUMMY_TOKEN_TESTING }}' \
+              -H 'Authorization: token ${{ secrets.FINE_G_TOKEN_TEST }}' \
               -d '{"event_type": "call"}'
           
           - name: Trigger workflow in another repository
