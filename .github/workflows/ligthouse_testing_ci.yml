@@ -1,7 +1,9 @@
 name: Generate lighthouse test report on PR
 on:
-    pull_request:
-        branches: [ main, lighthouse_testing_pipeline ]
+    # pull_request:
+    #     branches: [ main, lighthouse_testing_pipeline ]
+    repository_dispatch:
+        types: [call]
         
 jobs:
     lhci:
@@ -20,12 +22,12 @@ jobs:
           - run: npm install
 
 
-          # - name: Install Lighthouse
-          #   run: npm install -g @lhci/cli@0.13.x
+          - name: Install Lighthouse
+            run: npm install -g @lhci/cli@0.13.x
 
-          # - name: Run Lighthouse
-          #   id: lhcitests
-          #   run: lhci autorun
+          - name: Run Lighthouse
+            id: lhcitests
+            run: lhci autorun
             # env: 
             #     LHCI_GITHUB_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
@@ -132,13 +134,13 @@ jobs:
           #     -H 'Authorization: token ${{ secrets.FINE_G_TOKEN_TEST }}' \
           #     -d '{"event_type": "call"}'
           
-          - name: Trigger workflow in another repository
-            run: |
-              curl -X POST \
-              -H "Accept: application/vnd.github+json" \
-              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              https://api.github.com/repos/shreybaz/test_automation/dispatches \
-              -d '{"event_type":"call"}'
+          # - name: Trigger workflow in another repository
+          #   run: |
+          #     curl -X POST \
+          #     -H "Accept: application/vnd.github+json" \
+          #     -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          #     https://api.github.com/repos/shreybaz/test_automation/dispatches \
+          #     -d '{"event_type":"call"}'
                      
 #     https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
 
