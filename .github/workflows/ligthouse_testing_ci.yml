@@ -108,24 +108,24 @@ jobs:
 
 
           # # call another repo as post deploy action
-          # - name: Trigger a workflow in another repo
-          #   uses: actions/github-script@v5
-          #   with:
-          #       script: |
-          #         github.rest.repos.createDispatchEvent({
-          #           owner: 'go-bazzinga',
-          #           repo: 'hot-or-not-web-leptos-ssr-e2e-test',
-          #           event_type: 'call',                    
-          #           client_payload: { key: "value" }
-          #         });
-          #       github-token: ${{ secrets.DUMMY_TOKEN_TESTING }}
+          - name: Trigger a workflow in another repo
+            uses: actions/github-script@v5
+            with:
+                script: |
+                  github.rest.repos.createDispatchEvent({
+                    owner: 'go-bazzinga',
+                    repo: 'hot-or-not-web-leptos-ssr-e2e-test',
+                    event_type: 'call',                    
+                    client_payload: { key: "value" }
+                  });
+                github-token: ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}
 
-          - name: Repository Dispatch
-            run: |
-              curl -X POST https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
-              -H 'Accept: application/vnd.github+json' \
-              -H 'Authorization: token ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}' \
-              -d '{"event_type": "call"}'
+          # - name: Repository Dispatch
+          #   run: |
+          #     curl -X POST https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
+          #     -H 'Accept: application/vnd.github+json' \
+          #     -H 'Authorization: token ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}' \
+          #     -d '{"event_type": "call"}'
 
           # - name: Repository Dispatch
           #   run: |
