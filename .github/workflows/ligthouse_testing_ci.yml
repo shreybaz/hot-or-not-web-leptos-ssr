@@ -107,18 +107,18 @@ jobs:
           #     path: ${{ github.workspace }}/tmp/artifacts
 
 
-          # call another repo as post deploy action
-          - name: Trigger a workflow in another repo
-            uses: actions/github-script@v5
-            with:
-                script: |
-                  github.rest.repos.createDispatchEvent({
-                    owner: 'go-bazzinga',
-                    repo: 'hot-or-not-web-leptos-ssr-e2e-test',
-                    event_type: 'call',                    
-                    client_payload: { key: "value" }
-                  });
-                github-token: ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}
+          # # call another repo as post deploy action
+          # - name: Trigger a workflow in another repo
+          #   uses: actions/github-script@v5
+          #   with:
+          #       script: |
+          #         github.rest.repos.createDispatchEvent({
+          #           owner: 'go-bazzinga',
+          #           repo: 'hot-or-not-web-leptos-ssr-e2e-test',
+          #           event_type: 'call',                    
+          #           client_payload: { key: "value" }
+          #         });
+          #       github-token: ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}
 
           # - name: Repository Dispatch
           #   run: |
@@ -143,5 +143,17 @@ jobs:
           #     -d '{"event_type":"call"}'
                      
 #     https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
+
+# using action/script@v6
+          - name: Trigger Workflow
+            uses: actions/github-script@v6
+            with:
+              github-token: ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}
+              script: |
+                github.rest.repos.createDispatchEvent({
+                  owner: 'go-bazzinga',
+                  repo: 'hot-or-not-web-leptos-ssr-e2e-test',
+                  event_type: 'call'
+                })
 
         
