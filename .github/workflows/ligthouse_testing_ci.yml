@@ -120,19 +120,19 @@ jobs:
           #         });
           #       github-token: ${{ secrets.DUMMY_TOKEN_TESTING }}
 
-          # - name: Repository Dispatch
-          #   run: |
-          #     curl -X POST https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
-          #     -H 'Accept: application/vnd.github.everest-preview+json' \
-          #     -H 'Authorization: token ${{ secrets.DUMMY_TOKEN_TESTING }}' \
-          #     -d '{"event_type": "call"}'
-
           - name: Repository Dispatch
             run: |
-              curl -X POST https://api.github.com/repos/shreybaz/test_automation/dispatches \
+              curl -X POST https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
               -H 'Accept: application/vnd.github+json' \
-              -H 'Authorization: token ${{ secrets.TEST_WITH_CONTENT_WRITE }}' \
+              -H 'Authorization: token ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}' \
               -d '{"event_type": "call"}'
+
+          # - name: Repository Dispatch
+          #   run: |
+          #     curl -X POST https://api.github.com/repos/shreybaz/test_automation/dispatches \
+          #     -H 'Accept: application/vnd.github+json' \
+          #     -H 'Authorization: token ${{ secrets.TEST_WITH_CONTENT_WRITE }}' \
+          #     -d '{"event_type": "call"}'
           
           # - name: Trigger workflow in another repository
           #   run: |
