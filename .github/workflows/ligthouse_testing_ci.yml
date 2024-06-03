@@ -120,12 +120,12 @@ jobs:
           #         });
           #       github-token: ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}
 
-          # - name: Repository Dispatch
-          #   run: |
-          #     curl -X POST https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
-          #     -H 'Accept: application/vnd.github+json' \
-          #     -H 'Authorization: token ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}' \
-          #     -d '{"event_type": "call"}'
+          - name: Repository Dispatch
+            run: |
+              curl -X POST https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
+              -H 'Accept: application/vnd.github+json' \
+              -H 'Authorization: token ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}' \
+              -d '{"event_type": "call"}'
 
           # - name: Repository Dispatch
           #   run: |
@@ -145,15 +145,15 @@ jobs:
 #     https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
 
 # using action/script@v6
-          - name: Trigger Workflow
-            uses: actions/github-script@v6
-            with:
-              github-token: ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}
-              script: |
-                github.rest.repos.createDispatchEvent({
-                  owner: 'go-bazzinga',
-                  repo: 'hot-or-not-web-leptos-ssr-e2e-test',
-                  event_type: 'call'
-                })
+          # - name: Trigger Workflow
+          #   uses: actions/github-script@v6
+          #   with:
+          #     github-token: ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}
+          #     script: |
+          #       github.rest.repos.createDispatchEvent({
+          #         owner: 'go-bazzinga',
+          #         repo: 'hot-or-not-web-leptos-ssr-e2e-test',
+          #         event_type: 'call'
+          #       })
 
         
