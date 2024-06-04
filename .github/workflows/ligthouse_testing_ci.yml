@@ -120,21 +120,21 @@ jobs:
           #         });
           #       github-token: ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}
 
-    # # for e2e tests repo
-    #       - name: Repository Dispatch
-    #         run: |
-    #           curl -X POST https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
-    #           -H 'Accept: application/vnd.github+json' \
-    #           -H 'Authorization: token ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}' \
-    #           -d '{"event_type": "call"}'
-
-    # for forked  e2e tests repo
+    # for e2e tests repo
           - name: Repository Dispatch
             run: |
-              curl -X POST https://api.github.com/repos/shreybaz/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
+              curl -X POST https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
               -H 'Accept: application/vnd.github+json' \
-              -H 'Authorization: token ${{ secrets.FORKED_TEST_PAT }}' \
+              -H 'Authorization: token ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}' \
               -d '{"event_type": "call"}'
+
+    # # for forked  e2e tests repo
+    #       - name: Repository Dispatch
+    #         run: |
+    #           curl -X POST https://api.github.com/repos/shreybaz/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
+    #           -H 'Accept: application/vnd.github+json' \
+    #           -H 'Authorization: token ${{ secrets.FORKED_TEST_PAT }}' \
+    #           -d '{"event_type": "call"}'
 
 
 
