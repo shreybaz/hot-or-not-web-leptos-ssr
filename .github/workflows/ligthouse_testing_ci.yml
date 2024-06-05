@@ -128,13 +128,13 @@ jobs:
               -H 'Authorization: token ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}' \
               -d '{"event_type": "call"}'
 
-    # for forked  e2e tests repo
-          - name: Repository Dispatch
-            run: |
-              curl -X POST https://api.github.com/repos/shreybaz/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
-              -H 'Accept: application/vnd.github+json' \
-              -H 'Authorization: token ${{ secrets.FORKED_TEST_PAT }}' \
-              -d '{"event_type": "call"}'
+    # # for forked  e2e tests repo
+    #       - name: Repository Dispatch
+    #         run: |
+    #           curl -X POST https://api.github.com/repos/shreybaz/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
+    #           -H 'Accept: application/vnd.github+json' \
+    #           -H 'Authorization: token ${{ secrets.FORKED_TEST_PAT }}' \
+    #           -d '{"event_type": "call"}'
 
 
 
@@ -167,12 +167,12 @@ jobs:
           #         event_type: 'call'
           #       })
 
-        # with code read and write after google chat addition in test1
-          - name: Repository Dispatch 
-            run: |
-                curl -X POST https://api.github.com/repos/PAT-ORG/test1/dispatches \
-                -H 'Accept: application/vnd.github+json' \
-                -H 'Authorization: token ${{ secrets.TOKEN_FOR_PAT_ORG_TEST1 }}' \
-                -d '{"event_type": "call"}'
+        # # with code read and write after google chat addition in test1
+        #   - name: Repository Dispatch 
+        #     run: |
+        #         curl -X POST https://api.github.com/repos/PAT-ORG/test1/dispatches \
+        #         -H 'Accept: application/vnd.github+json' \
+        #         -H 'Authorization: token ${{ secrets.TOKEN_FOR_PAT_ORG_TEST1 }}' \
+        #         -d '{"event_type": "call"}'
       
        
