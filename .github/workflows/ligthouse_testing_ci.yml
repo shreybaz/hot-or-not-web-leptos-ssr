@@ -1,0 +1,178 @@
+name: Generate lighthouse test report on PR
+on:
+    pull_request:
+        branches: [ main, lighthouse_testing_pipeline ]
+    # repository_dispatch:
+    #     types: [call]
+        
+jobs:
+    lhci:
+        runs-on: ubuntu-latest
+        # permissions:
+        #   contents: write
+        #   actions: write 
+        steps:
+          - name: Checkout repo
+            uses: actions/checkout@v3
+
+          - name: Install Node.js
+            uses: actions/setup-node@v4
+            with: 
+                node-version: 20
+          - run: npm install
+
+
+          # - name: Install Lighthouse
+          #   run: npm install -g @lhci/cli@0.13.x
+
+          # - name: Run Lighthouse
+          #   id: lhcitests
+          #   run: lhci autorun
+            # env: 
+            #     LHCI_GITHUB_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+          # - name: install playwright
+          #   run: npx playwright install    
+
+          # - name: run playwright
+          #   id: tests
+          #   run: npx playwright test --project=firefox --workers=3
+          #   # continue-on-error: true
+            
+          # - name: Notify on Google Chat 
+          #   uses: Co-qn/google-chat-notification@v1
+          #   with:
+          #     name: test
+          #     url: ${{ secrets.TEST_WEBHOOK_URL }}
+          #     status: ${{ steps.tests.outcome }}
+          
+    # close-pr:
+    #     if: ${{ needs.lhci.result != 'failure' }}
+    #     needs: lhci 
+    #     runs-on: ubuntu-latest
+    #     steps:      
+    #     - run: gh pr close "$NUMBER" --comment "$COMMENT"
+    #       env:
+    #           GITHUB_TOKEN: ${{ secrets.NEW_GITHUB_APP_TOKEN }}
+    #           GH_REPO: ${{ github.repository }}
+    #           NUMBER: ${{ github.event.number }}
+    #           COMMENT: >
+    #             "Playwright tests failed. Closing this pull request."
+
+         
+    
+    
+          # - name: Check test result and comment
+          #   uses: peter-evans/create-or-update-comment@v1
+          #   with:
+          #     token: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          #     issue-number: ${{ github.event.pull_request.number }}
+          #     body: |
+          #       ${{ steps.tests.outcome == 'failed' && 'Test failed, Please check logs for details.' || 'Test passed :heavy_check_mark:'  }}
+
+
+          # # foo lhci test to comment Lighthouse score to PR
+          # - uses: actions/checkout@master
+          # - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+          # - name: lighthouseCheck
+          #   uses: foo-software/lighthouse-check-action@master
+          #   with:
+          #     outputDirectory: ${{ github.workspace }}/tmp/artifacts
+          #     gitHubAccessToken: ${{ secrets.NEW_GITHUB_APP_TOKEN }}
+          #     urls: 'https://yral.com/'
+         
+          # - name: Notify on Google Chat 
+          #   uses: Co-qn/google-chat-notification@v1
+          #   with:
+          #     name: test
+          #     url: ${{ secrets.TEST_WEBHOOK_URL }}
+          #     status: ${{ steps.lighthouseCheck.outputs }}
+
+              
+          # - name: Verify Lighthouse Check results
+          #   uses: foo-software/lighthouse-check-status-action@master
+          #   with:
+          #     lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
+          #     minAccessibilityScore: "90"
+          #     minBestPracticesScore: "90"
+          #     minPerformanceScore: "50"
+          #     minProgressiveWebAppScore: "50"
+          #     minSeoScore: "50"
+
+
+          # - name: Upload artifacts
+          #   uses: actions/upload-artifact@master
+          #   with:
+          #     name: Lighthouse reports
+          #     path: ${{ github.workspace }}/tmp/artifacts
+
+
+          # # call another repo as post deploy action
+          # - name: Trigger a workflow in another repo
+          #   uses: actions/github-script@v5
+          #   with:
+          #       script: |
+          #         github.rest.repos.createDispatchEvent({
+          #           owner: 'go-bazzinga',
+          #           repo: 'hot-or-not-web-leptos-ssr-e2e-test',
+          #           event_type: 'call',                    
+          #           client_payload: { key: "value" }
+          #         });
+          #       github-token: ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}
+
+    # for e2e tests repo
+          - name: Repository Dispatch
+            run: |
+              curl -X POST https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
+              -H 'Accept: application/vnd.github+json' \
+              -H 'Authorization: token ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}' \
+              -d '{"event_type": "call"}'
+
+    # # for forked  e2e tests repo
+    #       - name: Repository Dispatch
+    #         run: |
+    #           curl -X POST https://api.github.com/repos/shreybaz/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
+    #           -H 'Accept: application/vnd.github+json' \
+    #           -H 'Authorization: token ${{ secrets.FORKED_TEST_PAT }}' \
+    #           -d '{"event_type": "call"}'
+
+
+
+          # - name: Repository Dispatch
+          #   run: |
+          #     curl -X POST https://api.github.com/repos/shreybaz/test_automation/dispatches \
+          #     -H 'Accept: application/vnd.github+json' \
+          #     -H 'Authorization: token ${{ secrets.TEST_WITH_CONTENT_WRITE }}' \
+          #     -d '{"event_type": "call"}'
+          
+          # - name: Trigger workflow in another repository
+          #   run: |
+          #     curl -X POST \
+          #     -H "Accept: application/vnd.github+json" \
+          #     -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          #     https://api.github.com/repos/shreybaz/test_automation/dispatches \
+          #     -d '{"event_type":"call"}'
+                     
+#     https://api.github.com/repos/go-bazzinga/hot-or-not-web-leptos-ssr-e2e-test/dispatches \
+
+# using action/script@v6
+          # - name: Trigger Workflow
+          #   uses: actions/github-script@v6
+          #   with:
+          #     github-token: ${{ secrets.TOKEN_FINE_GRAINED_E2E_TESTS }}
+          #     script: |
+          #       github.rest.repos.createDispatchEvent({
+          #         owner: 'go-bazzinga',
+          #         repo: 'hot-or-not-web-leptos-ssr-e2e-test',
+          #         event_type: 'call'
+          #       })
+
+        # # with code read and write after google chat addition in test1
+        #   - name: Repository Dispatch 
+        #     run: |
+        #         curl -X POST https://api.github.com/repos/PAT-ORG/test1/dispatches \
+        #         -H 'Accept: application/vnd.github+json' \
+        #         -H 'Authorization: token ${{ secrets.TOKEN_FOR_PAT_ORG_TEST1 }}' \
+        #         -d '{"event_type": "call"}'
+      
+       
